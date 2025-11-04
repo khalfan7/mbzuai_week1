@@ -25,7 +25,7 @@ def set_seed(seed):
 #we make the environment in a definition so that we can call it multiple times
 def make_env():
     env = gym.make('FetchPickAndPlace-v4', 
-                   render_mode='None', 
+                   render_mode=None, 
                    max_episode_steps=200,)  
     #'Sparse rewards are only given at the end of a task, 
     #while dense rewards provide frequent feedback at multiple steps.
@@ -44,13 +44,21 @@ def arg_parse():
     parser.add_argument('--buffer_size', type=int, default=int(1e6), help='Replay buffer size')
     args = parser.parse_args()
     return args
+
+def get_next_test_number(results_dir):
+    """Get the next test number for this algorithm"""
+    os.makedirs(results_dir, exist_ok=True)
+    test_num = 1
+    while os.path.exists(f'{results_dir}/test{test_num}'):
+        test_num += 1
+    return test_num
 #after you add all the arguments you can parse them and parse will check the lines of your code in your bash
 
 if __name__ == '__main__':
     args = arg_parse()
     set_seed(args.seed)
     gym.register_envs(gymnasium_robotics)
-    env=make_vec_env(make_env, n_envs=5,vec_env_cls=DummyVecEnv)
+    env=make_vec_env(make_env, n_envs=32,vec_env_cls=DummyVecEnv)
     if args.model == 'PPO':
         model = PPO(policy='MultiInputPolicy', env=env, verbose=1)
     elif args.model == 'SAC':

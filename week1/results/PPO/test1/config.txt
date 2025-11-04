@@ -1,0 +1,21 @@
+============================================================
+PPO - Pick and Place (Sparse Reward)
+============================================================
+Seed: 42
+Algorithm: PPO
+Total Timesteps: 1,000,000
+Environment: FetchPickAndPlace-v4
+Reward Type: sparse
+Render Mode: None (visualization disabled)
+Device: CUDA (GPU acceleration)
+Max Episode Steps: 200
+Number of Parallel Environments: 32
+Learning Rate: 1e-3
+N Steps: 4096
+Batch Size: 2048
+Entropy Coefficient: 0.02
+Start Time: 2025-11-04 00:40:40
+============================================================
+
+End Time: 2025-11-04 00:57:41
+Training completed successfully!

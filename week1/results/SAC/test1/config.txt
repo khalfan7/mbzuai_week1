@@ -1,0 +1,22 @@
+============================================================
+SAC - Pick and Place (Sparse Reward)
+============================================================
+Seed: 42
+Algorithm: SAC (Soft Actor-Critic)
+Total Timesteps: 1,000,000
+Environment: FetchPickAndPlace-v4
+Reward Type: sparse
+Render Mode: None (visualization disabled)
+Device: CUDA (GPU acceleration)
+Max Episode Steps: 200
+Number of Parallel Environments: 32
+Gamma (discount factor): 0.99
+Tau (target network update): 0.05
+Buffer Size: 1000000
+Learning Rate: 1e-4
+Batch Size: 2048
+Start Time: 2025-11-04 00:57:47
+============================================================
+
+End Time: 2025-11-04 01:21:57
+Training completed successfully!
