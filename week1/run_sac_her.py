@@ -47,9 +47,6 @@ if __name__ == '__main__':
         tensorboard_log=log_dir
     )
     model.learn(total_timesteps=total_timesteps)
-
-    print(f"\nTraining SAC+HER for {total_timesteps:,} steps (sparse reward)…")
-    print(f"Environments: {n_envs}")
     model.save(f'{log_dir}/final_model')
+    env.save(f'{log_dir}/vecnormalize.pkl')   
     env.close()
-    print(f"Saved model to {log_dir}/")

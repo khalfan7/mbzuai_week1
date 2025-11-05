@@ -45,9 +45,6 @@ if __name__ == '__main__':
     )
 
     model.learn(total_timesteps=total_timesteps)
-
-    print(f"\nTraining PPO for {total_timesteps:,} steps (sparse reward)…")
     model.save(f'{log_dir}/final_model')
     env.save(f'{log_dir}/vecnormalize.pkl')   
     env.close()
-    print(f"Saved model + VecNormalize stats to {log_dir}/")
