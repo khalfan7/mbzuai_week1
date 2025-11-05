@@ -1,0 +1,26 @@
+# make executable and run
+chmod +x /home/khalfan.hableel/ROB7101/ass3/install_arel.sh
+/home/khalfan.hableel/ROB7101/ass3/install_arel.sh
+
+# activate when you want to train
+source /home/khalfan.hableel/ROB7101/ass3/arel/bin/activate
+
+# python .py
+
+tensorboard --logdir /home/khalfan.hableel/ROB7101/ass3/week1/results --port 6006
+
+View rollout success rate live
+
+open http://localhost:6006
+
+go to Scalars.
+
+in the left filter, check:
+
+rollout/success_rate (for each run)
+
+optionally eval/success_rate if you ever log evals
+
+set X-Axis = Step, tweak Smoothing if you like.
+
+/home/khalfan.hableel/ROB7101/ass3/week1/results/{PPO,SAC,SAC_HER}/<run-subdir>/
