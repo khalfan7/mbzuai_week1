@@ -24,17 +24,12 @@ if __name__ == '__main__':
     os.makedirs(log_dir, exist_ok=True)
 
     # Vectorized envs
-    def make_flattened_env():
-        env = make_env()
-        env = FlattenObservation(env)
-        return env
-
-    env = make_vec_env(make_flattened_env, n_envs=n_envs, vec_env_cls=SubprocVecEnv, seed=42)
+    env = make_vec_env(make_env, n_envs=n_envs, vec_env_cls=SubprocVecEnv, seed=42)
     env = VecNormalize(env, norm_obs=True, norm_reward=True)
 
     # PPO 
     model = PPO(
-        policy='MlpPolicy',
+        policy='MultiInputPolicy',
         env=env,
         n_steps=2048,
         batch_size=64,
@@ -49,8 +44,9 @@ if __name__ == '__main__':
         tensorboard_log=log_dir
     )
 
-    print(f"\nTraining PPO for {total_timesteps:,} steps (sparse reward)…")
     model.learn(total_timesteps=total_timesteps)
+
+    print(f"\nTraining PPO for {total_timesteps:,} steps (sparse reward)…")
     model.save(f'{log_dir}/final_model')
     env.save(f'{log_dir}/vecnormalize.pkl')   
     env.close()

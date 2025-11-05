@@ -23,14 +23,14 @@ if __name__ == '__main__':
 
     # Envs 
     env = make_vec_env(make_env, n_envs=n_envs, vec_env_cls=SubprocVecEnv, seed=42)
-    env = VecNormalize(env, norm_obs=True, norm_reward=False, clip_obs=200)
+    env = VecNormalize(env, norm_obs=True, norm_reward=False)
 
     model = SAC(
         policy='MultiInputPolicy',
         env=env,
         replay_buffer_class=HerReplayBuffer,
         replay_buffer_kwargs=dict(
-            n_sampled_goal=8,
+            n_sampled_goal=4,
             goal_selection_strategy='future',
             handle_timeout_termination=True
         ),
@@ -46,6 +46,7 @@ if __name__ == '__main__':
         verbose=1,
         tensorboard_log=log_dir
     )
+    model.learn(total_timesteps=total_timesteps)
 
     print(f"\nTraining SAC+HER for {total_timesteps:,} steps (sparse reward)…")
     print(f"Environments: {n_envs}")

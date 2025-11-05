@@ -22,16 +22,12 @@ if __name__ == '__main__':
     log_dir = 'results/SAC'
     os.makedirs(log_dir, exist_ok=True)
 
-    def make_flattened_env():
-        env = make_env()
-        env = FlattenObservation(env)
-        return env
 
-    env = make_vec_env(make_flattened_env, n_envs=n_envs, vec_env_cls=SubprocVecEnv, seed=42)
-    env = VecNormalize(env, norm_obs=True, norm_reward=False, clip_obs=10)
+    env = make_vec_env(make_env, n_envs=n_envs, vec_env_cls=SubprocVecEnv, seed=42)
+    env = VecNormalize(env, norm_obs=True, norm_reward=False)
 
     model = SAC(
-        policy='MlpPolicy',
+        policy='MultiInputPolicy',
         env=env,
         learning_rate=3e-4,
         buffer_size=1_500_000,
@@ -43,12 +39,12 @@ if __name__ == '__main__':
         seed=42,
         verbose=1,
         tensorboard_log=log_dir,
-        replay_buffer_kwargs=dict(handle_timeout_termination=True)
     )
+
+    model.learn(total_timesteps=total_timesteps)
 
     print(f"\nTraining SAC for {total_timesteps:,} steps (sparse reward)…")
     print(f"Environments: {n_envs}")
-    model.learn(total_timesteps=total_timesteps)
     model.save(f'{log_dir}/final_model')
     env.save(f'{log_dir}/vecnormalize.pkl')   
     env.close()
