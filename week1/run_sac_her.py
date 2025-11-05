@@ -2,12 +2,12 @@ import os
 import gymnasium as gym
 import gymnasium_robotics
 from stable_baselines3.common.env_util import make_vec_env
-from stable_baselines3.common.vec_env import SubprocVecEnv
+from stable_baselines3.common.vec_env import SubprocVecEnv, VecNormalize
 from stable_baselines3 import SAC, HerReplayBuffer
 
 
 def make_env():
-    return gym.make('FetchPickAndPlace-v4',
+    return gym.make('FetchPickAndPlace-v2',
                     reward_type='sparse',
                     render_mode=None)
 
@@ -35,9 +35,9 @@ if __name__ == '__main__':
             handle_timeout_termination=True
         ),
         learning_rate=3e-4,
-        buffer_size=1_000_000,
+        buffer_size=1_500_000,
         batch_size=512,
-        tau=0.005,
+        tau=0.02,
         gamma=0.98,       
         learning_starts=5_000,
         device='cuda',
@@ -48,9 +48,7 @@ if __name__ == '__main__':
     )
 
     print(f"\nTraining SAC+HER for {total_timesteps:,} steps (sparse reward)…")
-    print(f"Environments: {n_envs}, Gradient steps per update: {n_envs}")
-    print("Note: No VecNormalize with HER to keep reward computation consistent.")
-    model.learn(total_timesteps=total_timesteps)
+    print(f"Environments: {n_envs}")
     model.save(f'{log_dir}/final_model')
     env.close()
     print(f"Saved model to {log_dir}/")

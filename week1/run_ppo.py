@@ -1,4 +1,3 @@
-
 import os
 import gymnasium as gym
 import gymnasium_robotics
@@ -9,7 +8,7 @@ from stable_baselines3 import PPO
 
 
 def make_env():
-    return gym.make('FetchPickAndPlace-v4',
+    return gym.make('FetchPickAndPlace-v2',
                     reward_type='sparse',
                     render_mode=None,
                     max_episode_steps=200)

@@ -8,7 +8,7 @@ from stable_baselines3 import SAC
 
 
 def make_env():
-    return gym.make('FetchPickAndPlace-v4',
+    return gym.make('FetchPickAndPlace-v2',
                     reward_type='sparse',
                     render_mode=None)
 
@@ -34,9 +34,9 @@ if __name__ == '__main__':
         policy='MlpPolicy',
         env=env,
         learning_rate=3e-4,
-        buffer_size=1_000_000,
+        buffer_size=1_500_000,
         batch_size=512,
-        tau=0.005,
+        tau=0.02,
         gamma=0.98,
         learning_starts=5_000,
         device='cuda',
@@ -47,7 +47,7 @@ if __name__ == '__main__':
     )
 
     print(f"\nTraining SAC for {total_timesteps:,} steps (sparse reward)…")
-    print(f"Environments: {n_envs}, Gradient steps per update: {n_envs}")
+    print(f"Environments: {n_envs}")
     model.learn(total_timesteps=total_timesteps)
     model.save(f'{log_dir}/final_model')
     env.save(f'{log_dir}/vecnormalize.pkl')   
